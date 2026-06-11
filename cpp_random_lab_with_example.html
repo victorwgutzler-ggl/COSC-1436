@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C++ Random Number Lab (With Examples)</title>
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --panel-dark: #1e293b;
+            --accent-blue: #38bdf8;
+            --accent-green: #4ade80;
+            --accent-red: #f87171;
+            --accent-purple: #c084fc;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            max-width: 800px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: var(--accent-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 850px;
+            background: var(--panel-dark);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            padding: 2rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        /* Educational Concept Guide */
+        .formula-card {
+            background: rgba(56, 189, 248, 0.05);
+            border-left: 4px solid var(--accent-blue);
+            padding: 1rem;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 2rem;
+        }
+
+        .formula-card h3 {
+            color: var(--accent-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .code-syntax {
+            font-family: 'Courier New', Courier, monospace;
+            background: #090d16;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            color: #f472b6;
+        }
+
+        /* Challenge Section */
+        .challenge-box {
+            background: rgba(255,255,255,0.02);
+            border: 1px dashed var(--border);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .challenge-tag {
+            position: absolute;
+            top: -12px;
+            left: 15px;
+            background: var(--accent-blue);
+            color: var(--bg-dark);
+            font-weight: bold;
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .challenge-text {
+            font-size: 1.2rem;
+            font-weight: 500;
+            margin-top: 0.5rem;
+        }
+
+        /* Code Input Area */
+        .input-area {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .editor-wrapper {
+            position: relative;
+            background: #090d16;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1rem;
+        }
+
+        .editor-wrapper::before {
+            content: "C++";
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: bold;
+        }
+
+        textarea {
+            width: 100%;
+            height: 80px;
+            background: transparent;
+            border: none;
+            color: #a7f3d0;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 1.1rem;
+            resize: none;
+            outline: none;
+            line-height: 1.5;
+        }
+
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-submit {
+            background: var(--accent-blue);
+            color: var(--bg-dark);
+        }
+
+        .btn-submit:hover {
+            background: #7dd3fc;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+        }
+
+        .btn-example {
+            background: rgba(192, 132, 252, 0.2);
+            color: var(--accent-purple);
+            border: 1px solid var(--accent-purple);
+        }
+
+        .btn-example:hover {
+            background: rgba(192, 132, 252, 0.3);
+        }
+
+        .btn-next {
+            background: var(--border);
+            color: var(--text-main);
+        }
+
+        .btn-next:hover {
+            background: #475569;
+        }
+
+        /* Feedback & Example UI */
+        .feedback, .example-box {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 6px;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .feedback.success {
+            background: rgba(74, 222, 128, 0.1);
+            border: 1px solid var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        .feedback.error {
+            background: rgba(248, 113, 113, 0.1);
+            border: 1px solid var(--accent-red);
+            color: var(--accent-red);
+        }
+
+        .example-box {
+            background: rgba(192, 132, 252, 0.1);
+            border: 1px solid var(--accent-purple);
+            color: var(--text-main);
+        }
+
+        .feedback h4, .example-box h4 {
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Score & Progress Tracker */
+        .footer-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>C++ Random Range Lab</h1>
+        <p>Master the mechanics of <span class="code-syntax">rand()</span> and the modulus operator to generate precise integer ranges.</p>
+    </header>
+
+    <div class="container">
+        <!-- Quick Concept Reference -->
+        <div class="formula-card">
+            <h3>💡 The Standard Formula</h3>
+            <p>To generate random numbers in a range from <strong>Min</strong> to <strong>Max</strong> (inclusive) in C++:</p>
+            <p style="margin-top:0.5rem; font-size:1.05rem;">
+                <span class="code-syntax">variable = rand() % (Max - Min + 1) + Min;</span>
+            </p>
+        </div>
+
+        <!-- Dynamic Challenge Box -->
+        <div class="challenge-box">
+            <span class="challenge-tag" id="challenge-num">Challenge 1</span>
+            <p class="challenge-text" id="challenge-instruction">Loading challenge...</p>
+        </div>
+
+        <!-- Input Area -->
+        <div class="input-area">
+            <label for="code-input">Type your C++ statement below (don't forget the semicolon!):</label>
+            <div class="editor-wrapper">
+                <textarea id="code-input" placeholder="result = rand() % ... ;" spellcheck="false"></textarea>
+            </div>
+        </div>
+
+        <!-- Interactive Control Group -->
+        <div class="btn-group">
+            <button class="btn-submit" onclick="gradeAnswer()">Submit & Grade</button>
+            <button class="btn-example" onclick="toggleExample()">Show Example Answer</button>
+            <button class="btn-next" onclick="generateChallenge()">Skip / Next</button>
+        </div>
+
+        <!-- Example Solution Output -->
+        <div id="example-box" class="example-box">
+            <h4>🔮 Correct Example Code</h4>
+            <p id="example-content"></p>
+        </div>
+
+        <!-- Dynamic Feedback Output -->
+        <div id="feedback" class="feedback"></div>
+
+        <!-- Metrics/Progress Footer -->
+        <div class="footer-stats">
+            <span id="score-display">Score: 0 / 0</span>
+            <span id="streak-display">Current Streak: 🔥 0</span>
+        </div>
+    </div>
+
+    <script>
+        // State variables
+        let currentMin = 0;
+        let currentMax = 0;
+        let totalQuestions = 0;
+        let score = 0;
+        let streak = 0;
+
+        // Configuration pool to keep problems mathematically sound and realistic for intro assignments
+        const ranges = [
+            {min: 3, max: 13},
+            {min: 1, max: 6},
+            {min: 10, max: 99},
+            {min: 0, max: 25},
+            {min: 50, max: 100},
+            {min: 10, max: 20},
+            {min: 5, max: 15}
+        ];
+
+        function generateChallenge() {
+            // Hide elements
+            document.getElementById('feedback').style.display = 'none';
+            document.getElementById('example-box').style.display = 'none';
+            document.getElementById('code-input').value = '';
+
+            // Pull a random scenario
+            const pick = ranges[Math.floor(Math.random() * ranges.length)];
+            currentMin = pick.min;
+            currentMax = pick.max;
+
+            // Update UI instruction
+            document.getElementById('challenge-num').innerText = `Challenge ${totalQuestions + 1}`;
+            document.getElementById('challenge-instruction').innerText = 
+                `Write a single C++ statement that assigns a random integer between ${currentMin} and ${currentMax} (inclusive) to an already declared integer variable named 'result'.`;
+            
+            // Pre-calculate example text
+            const expectedModulus = (currentMax - currentMin) + 1;
+            const offsetStr = currentMin > 0 ? ` + ${currentMin}` : "";
+            document.getElementById('example-content').innerHTML = `<code>result = rand() % ${expectedModulus}${offsetStr};</code><br><small style="color: var(--text-muted);">Explanation: (${currentMax} - ${currentMin} + 1) gives a modulus scale of ${expectedModulus}, shifted up by ${currentMin}.</small>`;
+        }
+
+        function toggleExample() {
+            const exampleBox = document.getElementById('example-box');
+            if (exampleBox.style.display === 'block') {
+                exampleBox.style.display = 'none';
+            } else {
+                exampleBox.style.display = 'block';
+            }
+        }
+
+        function gradeAnswer() {
+            const userInput = document.getElementById('code-input').value.trim();
+            const feedbackDiv = document.getElementById('feedback');
+            
+            if (!userInput) {
+                showFeedback(false, "❌ Input is empty. Please write your statement before grading.");
+                return;
+            }
+
+            if (!userInput.endsWith(';')) {
+                showFeedback(false, "⚠️ Syntax Error: C++ statements must end with a semicolon ( ; ).");
+                return;
+            }
+
+            const cleanInput = userInput.replace(/\s+/g, '');
+            const expectedModulus = (currentMax - currentMin) + 1;
+            const expectedOffset = currentMin;
+
+            const pattern = /result=rand\(\)%(\d+)(?:\+(\d+))?;/;
+            const match = cleanInput.match(pattern);
+
+            totalQuestions++;
+
+            if (match) {
+                const userModulus = parseInt(match[1], 10);
+                const userOffset = match[2] ? parseInt(match[2], 10) : 0;
+
+                if (userModulus === expectedModulus && userOffset === expectedOffset) {
+                    score++;
+                    streak++;
+                    showFeedback(true, `🎉 <strong>Perfect!</strong> Correct parameters. Here's how your code works: <br>
+                    • <code>rand() % ${expectedModulus}</code> yields numbers 0 through ${expectedModulus - 1}.<br>
+                    • Adding <code>+ ${expectedOffset}</code> shifts the range up to: ${expectedOffset} through ${currentMax}.`);
+                } else {
+                    streak = 0;
+                    let correctionDetails = "";
+                    
+                    if (userModulus !== expectedModulus) {
+                        correctionDetails += `• Your modulus value (${userModulus}) is incorrect. Scale should be: <code>Max - Min + 1</code>. For this range, it should be <code>${currentMax} - ${currentMin} + 1 = ${expectedModulus}</code>.<br>`;
+                    }
+                    if (userOffset !== expectedOffset) {
+                        correctionDetails += `• Your offset/shift value (${userOffset}) is incorrect. The shifting offset should equal your minimum starting value, which is <code>${expectedOffset}</code>.`;
+                    }
+
+                    showFeedback(false, `❌ <strong>Incorrect Parameters.</strong><br>${correctionDetails}`);
+                }
+            } else {
+                streak = 0;
+                if (!cleanInput.includes("rand()")) {
+                    showFeedback(false, "❌ <strong>Missing standard function:</strong> You must call the standard library's <code>rand()</code> function.");
+                } else if (!cleanInput.includes("%")) {
+                    showFeedback(false, "❌ <strong>Missing Modulus Operator:</strong> Use the remainder operator (<code>%</code>) to scale down the integer.");
+                } else if (!cleanInput.startsWith("result=")) {
+                    showFeedback(false, "❌ <strong>Assignment Error:</strong> Make sure you are assigning the generated value to the target variable using <code>result = ...</code>");
+                } else {
+                    showFeedback(false, `❌ <strong>Syntax Parsing Error:</strong> Double check your layout. Your formula must match the architecture: <br><code>result = rand() % RangeSize + MinimumValue;</code>`);
+                }
+            }
+
+            document.getElementById('score-display').innerText = `Score: ${score} / ${totalQuestions}`;
+            document.getElementById('streak-display').innerText = `Current Streak: 🔥 ${streak}`;
+        }
+
+        function showFeedback(isSuccess, message) {
+            const feedbackDiv = document.getElementById('feedback');
+            feedbackDiv.style.display = 'block';
+            feedbackDiv.className = `feedback ${isSuccess ? 'success' : 'error'}`;
+            feedbackDiv.innerHTML = `<h4>${isSuccess ? '✅ Code Evaluated Successfully' : '❌ Evaluation Failed'}</h4><p>${message}</p>`;
+        }
+
+        window.onload = generateChallenge;
+    </script>
+</body>
+</html>
